@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/greeting-svc/middleware"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func NewRouter() *mux.Router {
@@ -22,6 +24,7 @@ func NewRouter() *mux.Router {
 			Handler(handler)
 
 	}
-
+	router.Use(middleware.PrometheusMiddleware)
+	router.Path("/metrics").Handler(promhttp.Handler())
 	return router
 }
